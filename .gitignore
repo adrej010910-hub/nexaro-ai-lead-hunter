@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Environment (never commit API keys)
+.env
+.env.local
+
+# Runtime data / database
+data/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db

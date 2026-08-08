@@ -1,0 +1,19 @@
+{
+  "name": "nexaro-ai-lead-hunter",
+  "version": "1.0.0",
+  "description": "NEXARO AI Lead Hunter - Autonomous AI agent that continuously discovers websites, analyzes them, and finds redesign leads",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

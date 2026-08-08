@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXARO AI Lead Hunter</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo">🧠</span>
+        <div>
+          <div class="brand-name">NEXARO</div>
+          <div class="brand-sub">AI LEAD HUNTER</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#" class="nav-item active" data-view="dashboard">📊 Dashboard</a>
+        <a href="#" class="nav-item" data-view="activity">🔴 Live Activity</a>
+        <a href="#" class="nav-item" data-view="leads">🎯 Leads</a>
+        <a href="#" class="nav-item" data-view="websites">🌐 Websites</a>
+        <a href="#" class="nav-item" data-view="approval">✅ Approval Queue</a>
+        <a href="#" class="nav-item" data-view="settings">⚙️ Settings</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="mode-switch">
+          <span>Mode:</span>
+          <button id="modeToggle" class="mode-btn">DEMO</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Dashboard -->
+      <section id="view-dashboard" class="view active">
+        <header class="view-header">
+          <h1>Dashboard</h1>
+          <div class="agent-status">
+            <span id="agentStatusDot" class="status-dot stopped"></span>
+            <span id="agentStatusText">STOPPED</span>
+          </div>
+        </header>
+
+        <div class="control-bar">
+          <button id="btnStart" class="btn btn-start">▶ START AGENT</button>
+          <button id="btnPause" class="btn btn-secondary">⏸ PAUSE</button>
+          <button id="btnStop" class="btn btn-danger">⏹ STOP</button>
+          <div class="spacer"></div>
+          <div class="schedule-info">
+            <span>Next scan: <strong id="nextScan">—</strong></span>
+            <span>Last scan: <strong id="lastScan">—</strong></span>
+          </div>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card"><div class="stat-num" id="statNewWebsites">0</div><div class="stat-label">NEW WEBSITES</div></div>
+          <div class="stat-card"><div class="stat-num" id="statAnalyzed">0</div><div class="stat-label">ANALYZED</div></div>
+          <div class="stat-card"><div class="stat-num" id="statHigh">0</div><div class="stat-label">HIGH POTENTIAL</div></div>
+          <div class="stat-card"><div class="stat-num" id="statMed">0</div><div class="stat-label">MEDIUM</div></div>
+          <div class="stat-card"><div class="stat-num" id="statMessages">0</div><div class="stat-label">MESSAGES READY</div></div>
+          <div class="stat-card"><div class="stat-num" id="statContacted">0</div><div class="stat-label">CONTACTED</div></div>
+          <div class="stat-card"><div class="stat-num" id="statDuplicates">0</div><div class="stat-label">DUPLICATES</div></div>
+          <div class="stat-card"><div class="stat-num" id="statErrors">0</div><div class="stat-label">ERRORS</div></div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel">
+            <h3>🤖 Agent Counters</h3>
+            <div id="counterList" class="counter-list"></div>
+          </div>
+          <div class="panel">
+            <h3>🟢 Live Activity</h3>
+            <div id="miniActivity" class="activity-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Activity -->
+      <section id="view-activity" class="view">
+        <header class="view-header"><h1>Live Agent Activity</h1></header>
+        <div class="panel">
+          <div id="activityList" class="activity-list full"></div>
+        </div>
+      </section>
+
+      <!-- Leads -->
+      <section id="view-leads" class="view">
+        <header class="view-header"><h1>Leads</h1></header>
+        <div class="filters">
+          <select id="filterCategory"><option value="">All categories</option><option>HIGH</option><option>MEDIUM</option><option>LOW</option><option>NOT_A_LEAD</option></select>
+          <select id="filterStatus"><option value="">All statuses</option><option>new</option><option>approved</option><option>contacted</option><option>rejected</option></select>
+          <button id="btnExport" class="btn btn-secondary">⬇ Export</button>
+        </div>
+        <div class="table-wrap panel">
+          <table class="table">
+            <thead><tr><th>Company</th><th>Category</th><th>Lead Score</th><th>Contact</th><th>Status</th><th></th></tr></thead>
+            <tbody id="leadsTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Websites -->
+      <section id="view-websites" class="view">
+        <header class="view-header"><h1>Websites</h1></header>
+        <div class="filters">
+          <input id="filterIndustry" placeholder="Industry">
+          <input id="filterCity" placeholder="City">
+          <input id="filterScore" type="number" placeholder="Max redesign score" min="0" max="100">
+          <button id="btnApplyFilters" class="btn btn-secondary">Apply</button>
+        </div>
+        <div class="table-wrap panel">
+          <table class="table">
+            <thead><tr><th>Domain</th><th>Industry</th><th>Location</th><th>Redesign</th><th>Status</th><th>Found</th></tr></thead>
+            <tbody id="websitesTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Approval -->
+      <section id="view-approval" class="view">
+        <header class="view-header"><h1>Approval Queue</h1></header>
+        <div id="approvalList" class="approval-list"></div>
+      </section>
+
+      <!-- Settings -->
+      <section id="view-settings" class="view">
+        <header class="view-header"><h1>Settings — Discovery</h1></header>
+        <div class="panel">
+          <h3>🎯 Autopilot Configuration</h3>
+          <div class="form-grid">
+            <label>Industries
+              <input id="setIndustries" placeholder="Рестораны, Кафе, Отели">
+            </label>
+            <label>Regions
+              <input id="setRegions" placeholder="Москва, Санкт-Петербург">
+            </label>
+            <label>Search frequency
+              <select id="setFrequency">
+                <option value="15min">Every 15 minutes</option>
+                <option value="30min">Every 30 minutes</option>
+                <option value="1hour">Every hour</option>
+                <option value="3hours" selected>Every 3 hours</option>
+                <option value="daily">Daily</option>
+              </select>
+            </label>
+            <label>Max new websites per scan
+              <select id="setMaxPerScan"><option>10</option><option>25</option><option selected>50</option><option>100</option></select>
+            </label>
+            <label>Min redesign score (lower = poorer site)
+              <input id="setMinRedesign" type="number" value="70" min="0" max="100">
+            </label>
+            <label>Min lead score
+              <input id="setMinLead" type="number" value="70" min="0" max="100">
+            </label>
+          </div>
+          <button id="btnSaveAutopilot" class="btn btn-primary">Save Autopilot</button>
+        </div>
+
+        <div class="panel">
+          <h3>🔎 Manual Scan (test)</h3>
+          <div class="form-grid">
+            <label>Industry <input id="scanIndustry" placeholder="Рестораны"></label>
+            <label>Region <input id="scanRegion" placeholder="Москва"></label>
+            <label>Results <input id="scanResults" type="number" value="5"></label>
+          </div>
+          <button id="btnScanOnce" class="btn btn-primary">Run Search Test</button>
+          <div id="scanOutput" class="scan-output"></div>
+        </div>
+
+        <div class="panel">
+          <h3>ℹ️ Integration Status</h3>
+          <div id="integrationStatus"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button id="modalClose" class="modal-close">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
